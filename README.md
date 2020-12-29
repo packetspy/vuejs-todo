@@ -1,5 +1,6 @@
 # vuejs-todo
-
+Project to study and improve new abilities
+VueJs version 2.6.x
 ## Project setup
 ```
 npm install
