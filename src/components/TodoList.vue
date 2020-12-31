@@ -1,54 +1,82 @@
 <template>
-  <div class="container">
-    <p>Completed Tasks: {{todoList.filter(todo => {return todo.done === true}).length}}</p>
-    <p>Pending Tasks: {{todoList.filter(todo => {return todo.done === false}).length}}</p>
-
-    <div class="ui card">
+  <div class="theming-container ui container">
+    <div class="ui huge header">Todo's</div>
+    <div class="ui card centered">
       <div class="content">
-        <div class="header">
-          Abbreviated Header
-        </div>
-
-      </div>
-      <div class="ui bottom attached two buttons">
-        <div role="button" class="ui button teal">
-          Action 1
-        </div>
-        <div role="button" class="ui button">
-          Action 2
+        <div class="description">
+          <div class="ui right action input"><input type="text" v-model="newTodo" placeholder="Some thing todo">
+            <div class="ui teal button" v-on:click="addTodo"><i class="add icon"></i>
+              Add
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <sui-card class="centered" v-for="todo in todoList" v-bind:key="todo.id">
-      <sui-card-content>
-        <sui-card-header>
-          {{todo.title}}
-        </sui-card-header>
-        <sui-card-meta>2 days ago</sui-card-meta>
-      </sui-card-content>
-      <sui-card-content>
-        <p>{{todo.project}}</p>
-      </sui-card-content>
-      <sui-card-content extra v-show="todo.done">
-        <span class="teal">
-          <sui-icon name="edit" /> Edit
-        </span>
-        <span slot="right" class="teal">
-          <sui-icon name="check" /> Completed
-        </span>
-      </sui-card-content>
+    <div class="ui card centered" v-for="(todo, index) in todoList" v-bind:key="todo.id" v-bind:item="todo" v-bind:index="index">
+      <div class="content">
+        <div class="header">
 
-      <sui-button attached="bottom" v-show="!todo.done">
-        <sui-icon name="check" /> Complete
-      </sui-button>
-    </sui-card>
+          <h2 is="sui-header" icon text-align="left">
+            <sui-header-content>{{todo.title}}</sui-header-content>
+          </h2>
+
+        </div>
+        <div class="meta">2 days ago</div>
+        <div class="description">{{todo.project}}</div>
+      </div>
+      <div class="ui bottom attached three buttons">
+        <div role="button" class="ui button">
+          <sui-icon name="edit" link />
+        </div>
+        <div role="button" class="ui button red" v-show="!todo.done">
+          <sui-icon name="help" link />
+        </div>
+        <div role="button" class="ui button teal" v-show="todo.done">
+          <sui-icon name="check" link />
+        </div>
+        <div role="button" class="ui button orange" v-on:click="removeTodo(todo)">
+          <sui-icon name="trash" />
+        </div>
+      </div>
+    </div>
+
+    <a is="sui-label" color="teal">
+      Completed: {{todoList.filter(todo => {return todo.done === true}).length}}
+    </a>
+    <a is="sui-label" color="red">
+      Pending: {{todoList.filter(todo => {return todo.done === false}).length}}
+    </a>
+
   </div>
 </template>
 
 <script>
 export default {
   props: ["todoList"],
+  data: function () {
+    return { newTodo: "", isEditing: false };
+  },
+  methods: {
+    showForm() {
+      this.isEditing = true;
+    },
+    hideForm() {
+      this.isEditing = false;
+    },
+    addTodo: function () {
+      if (!this.newTodo.trim()) return;
+      this.todoList.push({
+        title: this.newTodo.trim(),
+        project: this.newTodo.trim(),
+        done: false,
+      });
+    },
+    removeTodo: function (todo) {
+      this.todoList.splice(this.todoList.indexOf(todo), 1);
+      //this.$emit("remove-todo", todo);
+    },
+  },
 };
 
 // console.log(this.todos);
