@@ -5,7 +5,7 @@
       <div class="content">
         <div class="description">
           <div class="ui right action input"><input type="text" v-model="newTodo" placeholder="Some thing todo">
-            <div class="ui teal button" v-on:click="addTodo"><i class="add icon"></i>
+            <div class="ui blue button" v-on:click="addTodo"><i class="add icon"></i>
               Add
             </div>
           </div>
@@ -16,13 +16,11 @@
     <div class="ui card centered" v-for="(todo, index) in todoList" v-bind:key="todo.id" v-bind:item="todo" v-bind:index="index">
       <div class="content">
         <div class="header">
-
           <h2 is="sui-header" icon text-align="left">
             <sui-header-content>{{todo.title}}</sui-header-content>
           </h2>
-
+          <div class="meta">2 days ago</div>
         </div>
-        <div class="meta">2 days ago</div>
         <div class="description">{{todo.project}}</div>
       </div>
       <div class="ui bottom attached three buttons">
